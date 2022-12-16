@@ -61,3 +61,12 @@ export const createTab = () => {
     })
         .then(response => response.json())
 }
+
+export const getClosed = () => {
+    return fetch("http://localhost:8000/tabs?closed", {
+        headers:{
+            "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`
+        }
+    })
+        .then(response => response.json())
+}

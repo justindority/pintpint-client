@@ -4,6 +4,7 @@ import { Register } from "../auth/Register.js"
 import { Employees } from "../employees/employee.js"
 import { Items } from "../items/items.js"
 import { ItemManager } from "../items/item_manager.js"
+import { Reports } from "../reports/reports.js"
 import { Tabs } from "../tabs/tabs.js"
 
 export const AdminViews = () => {
@@ -14,6 +15,8 @@ export const AdminViews = () => {
 			<Route path="/tabs" element={<Tabs />} />
             <Route path="/items" element={<ItemManager />} />
             <Route path="/employees" element={<Employees />} />
+            <Route path="/reports" element={<Reports />} />
+
 
             {/* <Route element={<Authorized />}>
                 <Route path="/" element={<GameList />} /> */}

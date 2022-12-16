@@ -26,5 +26,4 @@ export const editEmployee = (emp) => {
         },
         body: JSON.stringify(emp)
     })
-        .then(response => response.json())
 }

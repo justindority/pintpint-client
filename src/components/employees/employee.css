@@ -1,0 +1,15 @@
+.employee-3-panel {
+    display: flex;
+}
+
+.three-panel-1 {
+    width: 33%
+}
+
+.three-panel-2 {
+    width: 33%
+}
+
+.three-panel-3 {
+    width: 33%
+}

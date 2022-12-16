@@ -16,14 +16,16 @@ export const Tabs = () => {
         getTabs().then(data => setTabs(data))
     }, [])
 
+
+
     const getSelectedTab = (e) => {
-        e.preventDefault()
         getTab(parseInt(e.target.id)).then(data => setSelectedTab(data))
     }
 
     const remoteSetSelectedTab = (tabId) => {
         if(tabId){
-            getTab(parseInt(tabId)).then(res => setSelectedTab(res)).then(getTabs(data => setTabs(data)))
+            getTab(parseInt(tabId)).then(res => setSelectedTab(res))
+            getTabs().then(data => setTabs(data))
         } else {
             setSelectedTab(null)
         }
@@ -31,7 +33,7 @@ export const Tabs = () => {
 
     const newTab = (e) => {
         e.preventDefault()
-        createTab().then(res => setSelectedTab(res))
+        createTab().then(res => remoteSetSelectedTab(res.id))
     }
 
     // const tabCounterHelper = () => {

@@ -97,6 +97,7 @@ export const ItemManager = () => {
     }
 
     const clickNewItemFn = (typeId) => {
+        setNewItem({})
         setClickedNewItem(true)
         setClickedEdit(false)
     }

@@ -1,11 +1,12 @@
 import { tab } from "@testing-library/user-event/dist/tab.js"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { editTab, removeItemFromTab } from "../../managers/tabManager.js"
 
 export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
 
     const [clickedAddName, setClickedAddName] = useState(false)
     const [tabName, setTabName] = useState()
+    const [subtotal, setSubtotal] = useState()
 
     const removeItem = (itemId) => {
         let item = {
@@ -14,6 +15,14 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
         removeItemFromTab(parseInt(selectedTab.id),item)
         .then(remoteSetSelectedTab(parseInt(selectedTab.id)))
     }
+
+    useEffect(()=>{
+        let sbtotal = 0
+            for (const item of selectedTab.items) {
+                sbtotal += parseFloat(item.price)
+            }
+            setSubtotal(sbtotal.toFixed(2))
+    }, [selectedTab])
 
     const addNameSubmit = () => {
         let tabToEdit = selectedTab
@@ -35,11 +44,16 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
     }
 
     const closeTab = (tab) => {
+        let customer = ""
+        if(tab.customer){
+            customer = tab.customer
+        }
         let tabToEdit = {
             id: parseInt(tab.id),
             employeeId: tab.employee.id,
             gratuity: tab.gratuity,
-            closed: true
+            closed: true,
+            customer: customer
         }
         editTab(tabToEdit).then(res => remoteSetSelectedTab(null))
     }
@@ -72,7 +86,9 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
                 } </p>
                 </>
             })
-        }{
+        }
+        <p>Subtotal: {subtotal}</p>
+        {
             selectedTab.closed
             ? <></>
             : <button onClick={()=>closeTab(selectedTab)}>Close Tab</button>
