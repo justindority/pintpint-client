@@ -107,7 +107,7 @@ export const ItemManager = () => {
             <div className="three-panel-1">
             {
                 itemTypes?.map(type => {
-                    return <p id={type.id} onClick={(e)=>clickItem(parseInt(e.target.id))}>{type.type}</p>
+                    return <section id={type.id} onClick={(e)=>clickItem(parseInt(e.target.id))}> <p id={type.id} >{type.type}</p></section>
                 })
             }
             

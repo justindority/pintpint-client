@@ -1,8 +1,15 @@
 export const getMe = () => {
-    return fetch(`http://localhost:8000/employees?me`, {
-        headers:{
-            "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`
-        }
-    })
+    let token = ""
+    if(localStorage.getItem("pintpoint_token")){
+        return fetch(`http://localhost:8000/getMe`,{
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`
+            }
+        })
         .then(response => response.json())
+    } else {
+        return fetch(`http://localhost:8000/getMe`)
+        .then(response => response.json())
+    }
+
 }

@@ -12,13 +12,22 @@ import { BartenderViews } from "./views/BartenderViews"
 
 export const Pintpoint = () => {
 
-	const [me, setMe] = useState({})
+	const [me, setMe] = useState()
+	const [doneLoading, setDoneLoading] = useState(false)
 
 	useEffect(()=>{
+		setDoneLoading(false)
+        setMe(null)
 		getMe().then(res => setMe(res))
 	},[])
 
+    useEffect(()=>{
+        if(me){
+            setDoneLoading(true)
+        }
+    },[me])
 
+	if(me && doneLoading){
 	return <Routes>
 		<Route path="/login" element={<Login />} />
 		<Route path="/register" element={<Register />} />
@@ -28,7 +37,7 @@ export const Pintpoint = () => {
 				<>
 					<NavBar me={me}/>
 					{
-						me[0]?.user?.is_staff
+						me?.user?.is_staff
 						? <AdminViews />
 						: <BartenderViews />
 					}
@@ -36,6 +45,8 @@ export const Pintpoint = () => {
 			</Authorized>
 
 		} />
-	</Routes>
+	</Routes>	
+	}
+	
 }
 

@@ -3,13 +3,32 @@
 }
 
 .three-panel-1 {
-    width: 33%
+    width: 20%
 }
 
 .three-panel-2 {
-    width: 33%
+    width: 20%
 }
 
 .three-panel-3 {
-    width: 33%
+    width: 60%
+}
+
+.item-types {
+    display: flex;
+    flex-direction: row;
+}
+
+.item-type {
+    padding: 1rem
+}
+
+.report-tab {
+    border: 1px;
+}
+
+.tab-list-item {
+    border: 1px solid black;
+    width: 5rem;
+    padding-left: .4rem;
 }

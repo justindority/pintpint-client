@@ -7,6 +7,24 @@ export const getTabs = () => {
         .then(response => response.json())
 }
 
+export const getOpenTabs = () => {
+    return fetch("http://localhost:8000/tabs?open", {
+        headers:{
+            "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`
+        }
+    })
+        .then(response => response.json())
+}
+
+export const getClosedTabs = () => {
+    return fetch("http://localhost:8000/tabs?closed", {
+        headers:{
+            "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`
+        }
+    })
+        .then(response => response.json())
+}
+
 export const getTab = (id) => {
     return fetch(`http://localhost:8000/tabs/${id}`, {
         headers:{

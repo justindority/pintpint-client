@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { getClosed } from "../../managers/tabManager"
 import { Tabs } from "../tabs/tabs"
+import { Chart } from 'react-chartjs-2'
+
 
 export const Reports = () => {
 
@@ -42,15 +44,16 @@ export const Reports = () => {
                 ? <>
                     {
                         previousWeekTabs.map(tab => {
-                            return <>
+                            return <section className="report-tab">
                             <p>{tab.customer}</p>
                            <p>Subtotal: ${tab.subtotal}</p>
-                           </>
+                           </section>
                         }
                            
                         )
                     }
                     <p>Report Total: ${weekTotal}</p>
+                 
                   </>
                 : <></>
             }

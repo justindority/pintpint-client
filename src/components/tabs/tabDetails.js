@@ -1,12 +1,14 @@
 import { tab } from "@testing-library/user-event/dist/tab.js"
 import { useEffect, useState } from "react"
-import { editTab, removeItemFromTab } from "../../managers/tabManager.js"
+import { editTab, getOpenTabs, removeItemFromTab } from "../../managers/tabManager.js"
 
-export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
+export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabButtonFn, clickedCloseTab, clickBackButtonWhenClosing, resetTabs}) => {
 
     const [clickedAddName, setClickedAddName] = useState(false)
     const [tabName, setTabName] = useState()
     const [subtotal, setSubtotal] = useState()
+    const [gratuity, setGratuity] = useState(0)
+    const [clickedPayByCard, setClickedPayByCard] = useState(false)
 
     const removeItem = (itemId) => {
         let item = {
@@ -38,37 +40,66 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
         setTabName(copy)
     }
 
+    const updateGratuity = (evt) => {
+        let copy = {...gratuity}
+        copy = parseFloat(evt.target.value)
+        if(copy){
+            setGratuity(copy)
+        } else {
+            setGratuity(0)
+        }
+        
+    }
+
 
     const clickedAddNameFn = () => {
         setClickedAddName(true)
     }
 
-    const closeTab = (tab) => {
+    const unclickAddNameFn = () => {
+        setClickedAddName(false)
+    }
+
+
+    const clickedPayWithCardButtonFn = (e) => {
+        e.preventDefault()
+        setClickedPayByCard(true)
+    } 
+
+    const unclickPayWithCardButtonFn = (e) => {
+        e.preventDefault()
+        setClickedPayByCard(false)
+    } 
+
+    const closeTab = () => {
         let customer = ""
-        if(tab.customer){
-            customer = tab.customer
+        if(selectedTab.customer){
+            customer = selectedTab.customer
         }
         let tabToEdit = {
-            id: parseInt(tab.id),
-            employeeId: tab.employee.id,
-            gratuity: tab.gratuity,
+            id: parseInt(selectedTab.id),
+            employeeId: selectedTab.employee.id,
+            gratuity: gratuity,
             closed: true,
             customer: customer
         }
-        editTab(tabToEdit).then(res => remoteSetSelectedTab(null))
+        editTab(tabToEdit).then(res => remoteSetSelectedTab(null)).then(res => resetTabs())
+
     }
 
     return(
         <>
         {
             clickedAddName
-            ? <><label>Name:</label><input onChange={updateName} ></input><button onClick={addNameSubmit}>Submit</button></>
+            ? <><button onClick={unclickAddNameFn}>Back</button><label>Name:</label><input onChange={updateName} ></input><button onClick={addNameSubmit}>Submit</button></>
             : <></>
         }
         {
             selectedTab.customer
             ? <p>Tab for {selectedTab.customer}</p>
-            : <><p>Tab {selectedTab.id} <button onClick={clickedAddNameFn} >Add Name to Tab</button></p></>
+            : ( clickedAddName
+                ? <><p>Tab {selectedTab.id} </p></>
+                : <><p>Tab {selectedTab.id} <button onClick={clickedAddNameFn} >Add Name to Tab</button></p></>)
         }
         {
             selectedTab.closed
@@ -78,12 +109,13 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
         {
             selectedTab?.items?.map(item => {
                 return <>
-                <p>{item.name}</p><p>{item.price}
+                <p key={item.id}>{item.name} ${item.price} </p>
                 {
                     selectedTab.closed
                     ? <></>
                     : <button id={item.id} onClick={(e)=>removeItem(e.target.id)}>Remove Item</button>
-                } </p>
+                } 
+            
                 </>
             })
         }
@@ -91,8 +123,35 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab}) => {
         {
             selectedTab.closed
             ? <></>
-            : <button onClick={()=>closeTab(selectedTab)}>Close Tab</button>
+            : (
+                clickedCloseTab
+                ? (
+                    clickedPayByCard
+                    ? <></>
+                    : <button onClick={clickBackButtonWhenClosing}>Back</button>
+                )
+                : <button onClick={clickedCloseTabButtonFn}>Close Tab</button>
+                )
 
+        }
+        {
+            clickedCloseTab
+            ? (
+                clickedPayByCard
+                ? <><button onClick={unclickPayWithCardButtonFn}>Back</button>
+                    Gratuity: <input type="number" onChange={updateGratuity}></input> 
+                    <button onClick={closeTab}>Swipe Card</button>
+                    <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
+                    <p>Total: ${(parseFloat(subtotal * 1.07) + gratuity)}</p></>
+                : (<>
+                <button onClick={clickedPayWithCardButtonFn}>Pay with Card</button>
+                <button onClick={closeTab}>Customer Paid Cash</button>
+                <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
+                <p>Total: ${(parseFloat(subtotal * 1.07))}</p>
+              </>)
+              )
+
+            : <></>
         }
         </>
     )

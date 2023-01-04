@@ -27,3 +27,11 @@ export const editEmployee = (emp) => {
         body: JSON.stringify(emp)
     })
 }
+
+export const terminateEmployee = (userId) => {
+    return fetch(`http://localhost:8000/users/${userId}`, {
+        method: 'PUT',
+        headers:{
+            "Authorization": `Token ${localStorage.getItem("pintpoint_token")}`        }
+    })
+}

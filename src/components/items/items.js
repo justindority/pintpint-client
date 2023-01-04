@@ -23,11 +23,11 @@ export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => 
         {
             items
             ? items.map(item => {
-                return <><p id={item.id}>{item.name}
+                return <><p id={item.id}>{item.name} &nbsp; ${item.price} &nbsp; &nbsp;
                 {
                     selectedTab.closed
                     ? <></>
-                    : <button onClick={(e)=>addTabItem(e.target.id)} id={item.id} >Add to Tab</button>
+                    : <button onClick={(e)=>addTabItem(e.target.id)} id={item.id}>Add to Tab</button>
                 }
                 </p></>
             })

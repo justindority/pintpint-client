@@ -14,14 +14,15 @@ export const ItemTypes = ({selectedTab, remoteSetSelectedTab}) => {
 
 
     return (<>
+    <article className="item-types">
     {
         itemTypes?.map(itemType => {
-            return <section>
-                <p id={itemType?.id} onClick={(e)=>setSelectedItemType(e.target.id)}>{itemType?.type}</p>
+            return <section id={itemType?.id} onClick={(e)=>setSelectedItemType(e.target.id)} >
+                <p class="item-type" id={itemType?.id} >{itemType?.type}</p>
             </section>
         })
     }
-
+    </article>
     {
         selectedItemType != null
         ? <section><Items selectedItemType={selectedItemType} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab}></Items></section>

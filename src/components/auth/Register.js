@@ -5,13 +5,18 @@ import "./Login.css"
 export const Register = (props) => {
     const [user, setUser] = useState({
         email: "",
-        fullName: "",
-        isStaff: false
+        firstName: "",
+        lastName: "",
+        isStaff: false,
+        hourlyRate: 0,
+        username: "",
+        password: ""
     })
     let navigate = useNavigate()
 
-    const registerNewUser = () => {
-        return fetch("http://localhost:8088/users", {
+    const registerNewUser = (event) => {
+        event.preventDefault()
+        return fetch("http://localhost:8000/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -19,33 +24,17 @@ export const Register = (props) => {
             body: JSON.stringify(user)
         })
             .then(res => res.json())
-            .then(createdUser => {
-                if (createdUser.hasOwnProperty("id")) {
-                    localStorage.setItem("kandy_user", JSON.stringify({
-                        id: createdUser.id,
-                        staff: createdUser.isStaff
-                    }))
+            .then(token => {
+                if (token.token) {
+                    localStorage.setItem("pintpoint_token",token.token)
 
-                    navigate("/")
-                }
-            })
+                    navigate("/tabs")
+                } else if('False' in token) {
+                    window.alert('')
+                }})
+            
     }
 
-    const handleRegister = (e) => {
-        e.preventDefault()
-        return fetch(`http://localhost:8088/users?email=${user.email}`)
-            .then(res => res.json())
-            .then(response => {
-                if (response.length > 0) {
-                    // Duplicate email. No good.
-                    window.alert("Account with that email address already exists")
-                }
-                else {
-                    // Good email, create user.
-                    registerNewUser()
-                }
-            })
-    }
 
     const updateUser = (evt) => {
         const copy = {...user}
@@ -55,8 +44,8 @@ export const Register = (props) => {
 
     return (
         <main style={{ textAlign: "center" }}>
-            <form className="form--login" onSubmit={handleRegister}>
-                <h1 className="h3 mb-3 font-weight-normal">register for pintpoint</h1>
+            <form className="form--login" onSubmit={registerNewUser}>
+                <h1 className="h3 mb-3 font-weight-normal">register an employee for pintpoint</h1>
                 <fieldset>
                     <label htmlFor="firstName"> First Name </label>
                     <input onChange={updateUser}
@@ -82,6 +71,12 @@ export const Register = (props) => {
                         placeholder="Username" required />
                 </fieldset>
                 <fieldset>
+                    <label htmlFor="password"> Password </label>
+                    <input onChange={updateUser}
+                        type="password" id="password" className="form-control"
+                        placeholder="Password" required />
+                </fieldset>
+                <fieldset>
                     <label htmlFor="hourlyRate"> Hourly Rate </label>
                     <input onChange={updateUser}
                         type="number" id="hourlyRate" className="form-control"
@@ -94,7 +89,7 @@ export const Register = (props) => {
                         setUser(copy)
                     }}
                         type="checkbox" id="isStaff" />
-                    <label htmlFor="email"> I am an employee </label>
+                    <label htmlFor="email"> This employee is an administrator </label>
                 </fieldset>
                 <fieldset>
                     <button type="submit"> Register </button>

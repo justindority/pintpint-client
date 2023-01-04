@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { editEmployee, getEmployee, getEmployees } from "../../managers/employeeManager"
+import { useNavigate } from "react-router-dom"
+import { editEmployee, getEmployee, getEmployees, terminateEmployee } from "../../managers/employeeManager"
 import './employee.css'
 
 
@@ -10,6 +11,7 @@ export const Employees = () => {
     const [clickedEmployee, setClickedEmployee] = useState(false)
     const [clickedEditEmployee, setClickedEditEmployee] = useState(false)
     const [editingEmployee, setEditingEmployee] = useState()
+    const navigate = useNavigate()
 
     useEffect(()=>{
         getEmployees().then(data => setEmployees(data))
@@ -55,6 +57,17 @@ export const Employees = () => {
         clickEmployee(selectedEmployee.id).then(res => {return setSelectedEmployee(res)})
     }
 
+    const terminateEmployeeFn = () => {
+        let empToSend = selectedEmployee.user_id
+        terminateEmployee(empToSend).then(getEmployees().then(data => setEmployees(data).then(setClickedEditEmployee(false)))
+        )
+    }
+
+    const registerNewEmployee = (e) => {
+        e.preventDefault()
+        navigate('/register')
+    }
+
 
 
     return(
@@ -62,10 +75,15 @@ export const Employees = () => {
             <div className="three-panel-1">
                 {
                     employees.map(emp => {
-                        return <><p id={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{emp.user.first_name} {emp.user.last_name}
+                        return <section id={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{
+                            emp?.user?.is_active
+                            ? <><p id={emp.id} >{emp?.user?.first_name} {emp?.user?.last_name}
                         </p></>
+                            : <></>
+                        } </section>
                     })
                 }
+                <button onClick={registerNewEmployee}>Register New Employee</button>
             </div>
             <div className="three-panel-2">
                 {
@@ -76,7 +94,7 @@ export const Employees = () => {
                         <p>Admin: {selectedEmployee.is_staff ? <>True</> : <>False</>}</p>
                         <p>Hire Date: {selectedEmployee.hire_date}</p>
                         <button onClick={clickEditEmployeeFn}>Edit Employee</button>
-                        <button>Terminate Employee</button>
+                        <button onClick={terminateEmployeeFn}>Terminate Employee</button>
                         </>
                     : <> </>
                 }
