@@ -3,6 +3,15 @@ import { createTab, getClosedTabs, getOpenTabs, getTab, getTabs } from "../../ma
 import { TabDetails } from "./tabDetails"
 import { ItemTypes } from "../items/item_types.js"
 import './tabs.css'
+import {
+    Accordion,
+    AccordionBody,
+    AccordionHeader,
+    AccordionItem,
+    Button,
+    ButtonGroup
+  } from 'reactstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export const Tabs = () => {
@@ -64,6 +73,16 @@ export const Tabs = () => {
         getClosedTabs().then(res => setTabs(res))
     }
 
+        const [open, setOpen] = useState('1');
+        const toggle = (id) => {
+          if (open === id) {
+            setOpen();
+          } else {
+            setOpen(id);
+          }
+        }
+      
+
     // const tabCounterHelper = () => {
     //     let counter = tabCounter++
     //     setTabCounter(counter)
@@ -72,20 +91,29 @@ export const Tabs = () => {
 
     return (<div className="tabs-3-panel">
     <div className="three-panel-1">
-    <button onClick={clickedOpenTabsFn}>Open Tabs</button><button onClick={clickedClosedTabsFn}>Closed Tabs</button>
-    {
-        tabs?.map(tab => {
-            return <section id={tab?.id} onClick={(e)=>getSelectedTab(e)} className="tab-list-item">
-                    <p id={tab?.id} >
-                {
-                    tab.customer
-                    ? tab.customer
-                    : <>Tab {tab.id}</>
-                }</p>
-            </section>
+    <div>
+      <ButtonGroup>
+        <Button onClick={clickedOpenTabsFn}>Open Tabs</Button>
+        <Button onClick={clickedClosedTabsFn}>Closed Tabs</Button>
+      </ButtonGroup> <br></br>
+        <ButtonGroup vertical>
+          {
+                tabs?.map(tab => {
+                    return <Button id={tab?.id} onClick={(e)=>getSelectedTab(e)} >
+                        {
+                            tab.customer
+                            ? tab.customer
+                            : <>Tab {tab.id}</>
+                        }</Button>
         })
     }
-    <button onClick={(e)=>newTab(e)}>Open New Tab</button>
+
+         
+
+
+    <Button onClick={(e)=>newTab(e)}>Open New Tab</Button>
+    </ButtonGroup>
+    </div>
     </div>
     <div className="three-panel-2">
     {

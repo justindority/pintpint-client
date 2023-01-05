@@ -4,6 +4,12 @@ import { createItem, deactivateItemFetch, editItem, getItem, getItems, getItemsB
 import { createItemType, getItemTypes } from "../../managers/itemTypeManager"
 import { addItemToTab, getTabs } from "../../managers/tabManager"
 import './items.css'
+import {Button, 
+        ButtonGroup,
+        Input, 
+        InputGroup, 
+        InputGroupText} from 'reactstrap'
+
 
 export const ItemManager = () => {
 
@@ -27,6 +33,7 @@ export const ItemManager = () => {
         setClickedEdit(false)
         setClickedItemType(true)
         setSelectedItemType(id)
+        setClickedNewItem(false)
         getItemsByType(id).then(data => setItems(data))
     }
 
@@ -70,6 +77,7 @@ export const ItemManager = () => {
 
     const clickedEditFn = (itemId) => {
         setNewItemTypeButtonClicked(false)
+        setClickedNewItem(false)
         setClickedEdit(true)
         getItem(itemId).then(res => setItemToEdit(res))
     }
@@ -105,17 +113,19 @@ export const ItemManager = () => {
     return(
         <div className="items-3-panel">
             <div className="three-panel-1">
+                <ButtonGroup vertical>
             {
                 itemTypes?.map(type => {
-                    return <section id={type.id} onClick={(e)=>clickItem(parseInt(e.target.id))}> <p id={type.id} >{type.type}</p></section>
+                    return (<Button id={type.id} onClick={(e)=>clickItem(parseInt(e.target.id))}>{type.type}</Button>)
                 })
             }
             
         {
             newItemTypeButtonClicked
-            ? <><label>Type: </label><input id="newItemTypeInput" onChange={updateNewItemType}></input><button onClick={(e)=>submitNewItemType()}>Submit</button><button onClick={()=>setNewItemTypeButtonClicked(false)}>Cancel</button></>
-            : <button onClick={clickNewItemTypeFn}>Create Item Type</button>
+            ? <><br/><label>Type: </label><input id="newItemTypeInput" onChange={updateNewItemType}></input><Button onClick={(e)=>submitNewItemType()}>Submit</Button><Button onClick={()=>setNewItemTypeButtonClicked(false)}>Cancel</Button></>
+            : <Button onClick={clickNewItemTypeFn}>Create Item Type</Button>
         }
+        </ButtonGroup>
         </div>
         <div className="three-panel-2">
         {
@@ -123,36 +133,81 @@ export const ItemManager = () => {
             ? <>{items.map(item => {
                 return <>
                 <p id={item.id}>{item.name} ${item.price} {item.active 
-                    ? <><button id={item.id} onClick={(e)=>clickedEditFn(parseInt(e.target.id))}>Edit</button> 
-                      <button id={item.id} onClick={(e)=>deactivateItem(parseInt(e.target.id))}>Deactivate</button></> 
-                    : <button id={item.id} onClick={(e)=>reactivateItem(parseInt(e.target.id))}>Reactivate</button>}</p>
+                    ? <><Button id={item.id} onClick={(e)=>clickedEditFn(parseInt(e.target.id))}>Edit</Button> 
+                      <Button id={item.id} onClick={(e)=>deactivateItem(parseInt(e.target.id))}>Deactivate</Button></> 
+                    : <Button id={item.id} onClick={(e)=>reactivateItem(parseInt(e.target.id))}>Reactivate</Button>}</p>
                 </>
-            })}<button id={selectedItemType} onClick={(e)=>clickNewItemFn(e.target.id)} >New Item of this Type</button></>
+            })}<Button id={selectedItemType} onClick={(e)=>clickNewItemFn(e.target.id)} >New Item of this Type</Button></>
             : <></>
         }
         </div>
         <div className="three-panel-3">
         {
             clickedEdit
-            ? (<><form onChange={(evt)=>updateItemToEdit(evt)}>
+            ? (<><div>
                 <p>Editing {itemToEdit?.name}</p>
-               <label>Name:</label><input id="name" value={itemToEdit?.name}></input><br></br>
-               <label>Price:</label><input id="price" value={itemToEdit?.price}></input> <br></br>
-               <label>Maker:</label><input id="maker" value={itemToEdit?.maker}></input> <br></br>
-            </form><button onClick={()=>editSubmitButton()}>Submit</button></>)
+                <InputGroup onChange={(evt)=>updateItemToEdit(evt)}>
+                    <InputGroupText>
+                        name
+                    </InputGroupText>
+                    <Input id="name" value={itemToEdit?.name} />
+                </InputGroup>
+                <br />
+                <InputGroup onChange={(evt)=>updateItemToEdit(evt)}>
+                    <InputGroupText>
+                        price
+                    </InputGroupText>
+                    <Input id="price" value={itemToEdit?.price}/>
+                </InputGroup >
+                <br />
+                <InputGroup onChange={(evt)=>updateItemToEdit(evt)}>
+                    <InputGroupText>
+                        maker
+                    </InputGroupText>
+                    <Input id="maker" value={itemToEdit?.maker}/>
+                
+                </InputGroup>
+                <br />
+                
+                <Button onClick={()=>editSubmitButton()}>Submit</Button>
+                </div> </>)
             : <></>
         }
         {
             clickedNewItem
-            ? (<><form onChange={(evt)=>updateNewItem(evt)}>
-                <p>Creating New Item:</p>
-                <label>Name:</label><input id="name" value={newItem?.name}></input><br></br>
-                <label>Price:</label><input id="price" value={newItem?.price}></input> <br></br>
-                <label>Maker:</label><input id="maker" value={newItem?.maker}></input> <br></br>
-            </form><button onClick={()=>newItemSubmitButton()}>Submit</button></>)
+            ? (<>            
+                <div>
+                    <p>Creating New Item</p>
+                    <InputGroup onChange={(evt)=>updateNewItem(evt)}>
+                        <InputGroupText>
+                            name
+                        </InputGroupText>
+                        <Input id="name" value={newItem?.name} />
+                    </InputGroup>
+                    <br />
+                    <InputGroup onChange={(evt)=>updateNewItem(evt)}>
+                        <InputGroupText>
+                            price
+                        </InputGroupText>
+                        <Input id="price" value={newItem?.price}/>
+                    </InputGroup >
+                    <br />
+                    <InputGroup onChange={(evt)=>updateNewItem(evt)}>
+                        <InputGroupText>
+                            maker
+                        </InputGroupText>
+                        <Input id="maker" value={newItem?.maker}/>
+                    
+                    </InputGroup>
+                    <br />
+                    
+                    <Button onClick={()=>newItemSubmitButton()}>Submit</Button>
+                </div> </>)
             : <></>
         }
         </div>
         </div>
     )
 }
+
+

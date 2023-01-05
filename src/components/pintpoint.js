@@ -47,6 +47,5 @@ export const Pintpoint = () => {
 		} />
 	</Routes>	
 	}
-	
 }
 

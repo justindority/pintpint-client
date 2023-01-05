@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { getItems, getActiveItemsByType } from "../../managers/itemManager"
 import { addItemToTab, getTabs } from "../../managers/tabManager"
+import {
+    Button
+  } from 'reactstrap';
 
 export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => {
 
@@ -27,7 +30,7 @@ export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => 
                 {
                     selectedTab.closed
                     ? <></>
-                    : <button onClick={(e)=>addTabItem(e.target.id)} id={item.id}>Add to Tab</button>
+                    : <Button onClick={(e)=>addTabItem(e.target.id)} id={item.id}>Add to Tab</Button>
                 }
                 </p></>
             })

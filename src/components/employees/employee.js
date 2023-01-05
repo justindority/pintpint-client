@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { editEmployee, getEmployee, getEmployees, terminateEmployee } from "../../managers/employeeManager"
 import './employee.css'
+import {Button, ButtonGroup, Input, InputGroup, InputGroupText} from 'reactstrap'
 
 
 export const Employees = () => {
@@ -72,29 +73,37 @@ export const Employees = () => {
 
     return(
         <div className="employee-3-panel">
+
+        
+
             <div className="three-panel-1">
+                <ButtonGroup vertical>
                 {
                     employees.map(emp => {
-                        return <section id={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{
-                            emp?.user?.is_active
-                            ? <><p id={emp.id} >{emp?.user?.first_name} {emp?.user?.last_name}
-                        </p></>
+                        return (
+                            
+                                emp?.user?.is_active
+                            ? <><Button id={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{emp?.user?.first_name} {emp?.user?.last_name}</Button>
+                        </>
                             : <></>
-                        } </section>
-                    })
+                            
+                    )
+                })
                 }
-                <button onClick={registerNewEmployee}>Register New Employee</button>
+                
+                <Button onClick={registerNewEmployee}>Register New Employee</Button>
+                </ButtonGroup>
             </div>
             <div className="three-panel-2">
                 {
                     selectedEmployee
                     ? <><p>Name: {selectedEmployee.first_name} {selectedEmployee.last_name}</p>
-                        <p>Hourly Rate: {selectedEmployee.hourly_rate}</p>
+                        <p>Hourly Rate: ${selectedEmployee.hourly_rate}</p>
                         <p>Username: {selectedEmployee.username}</p>
                         <p>Admin: {selectedEmployee.is_staff ? <>True</> : <>False</>}</p>
                         <p>Hire Date: {selectedEmployee.hire_date}</p>
-                        <button onClick={clickEditEmployeeFn}>Edit Employee</button>
-                        <button onClick={terminateEmployeeFn}>Terminate Employee</button>
+                        <Button onClick={clickEditEmployeeFn}>Edit Employee</Button>
+                        <Button onClick={terminateEmployeeFn}>Terminate Employee</Button>
                         </>
                     : <> </>
                 }
@@ -102,18 +111,53 @@ export const Employees = () => {
             <div className="3-panel-3">
                 {
                     clickedEditEmployee
-                    ? (<><form onChange={(evt)=>updateEmployee(evt)}>
-                    <p>Creating New Item:</p>
-                    <label>First Name:</label><input id="first_name" value={editingEmployee?.first_name}></input><br></br>
-                    <label>Last Name:</label><input id="last_name" value={editingEmployee?.last_name}></input><br></br>
-                    <label>Email:</label><input id="email" value={editingEmployee?.email}></input><br></br>
-                    <label>Username:</label><input id="username" value={editingEmployee?.username}></input><br></br>
-                    <label>Hourly Rate:</label><input id="hourly_rate" value={editingEmployee?.hourly_rate}></input> <br></br>
-                    {/* <label>Pintpoint Admin?:</label><input id="is_staff" value={newItem?.maker}></input> <br></br> */}
-                    </form><button onClick={()=>editEmployeeSubmitButton()}>Submit</button></>)
+                    ? (<>            
+                        <div>
+                        <InputGroup onChange={(evt)=>updateEmployee(evt)}>
+                            <InputGroupText>
+                                first name
+                            </InputGroupText>
+                            <Input id="first_name" value={editingEmployee?.first_name} />
+                        </InputGroup>
+                        <br />
+                        <InputGroup onChange={(evt)=>updateEmployee(evt)}>
+                            <InputGroupText>
+                                last name
+                            </InputGroupText>
+                            <Input id="last_name" value={editingEmployee?.last_name}/>
+                        </InputGroup >
+                        <br />
+                        <InputGroup onChange={(evt)=>updateEmployee(evt)}>
+                            <InputGroupText>
+                                email
+                            </InputGroupText>
+                            <Input id="email" value={editingEmployee?.email}/>
+            
+                        </InputGroup>
+                        <br />
+                        <InputGroup onChange={(evt)=>updateEmployee(evt)}>
+                            <InputGroupText>
+                                username
+                            </InputGroupText>
+                            <Input id="username" value={editingEmployee?.username}/>
+                        </InputGroup>
+                        <br />
+                        <InputGroup onChange={(evt)=>updateEmployee(evt)}>
+                            <InputGroupText>
+                                hourly rate
+                            </InputGroupText>
+                            <Input id="hourly_rate" value={editingEmployee?.hourly_rate}/>
+                        </InputGroup>
+                        <br />
+                    <Button onClick={()=>editEmployeeSubmitButton()}>Submit</Button>
+                </div> 
+                    </>)
                     : <></>
                 }
             </div>
+
+
+
         </div>
     )
 }

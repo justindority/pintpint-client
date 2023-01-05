@@ -23,7 +23,8 @@ export const NavBar = ({me}) => {
     if(myself && finishedLoading){
     
 
-    return (
+    return (<>
+
         <ul className="navbar">
             <li className="navbar__item">
                 <Link className="navbar__link" to="tabs" onClick={() => {
@@ -56,7 +57,7 @@ export const NavBar = ({me}) => {
                     navigate("/", {replace: true})
                 }}>Logout</Link>
             </li>
-        </ul>
+        </ul></>
     )
 }
 

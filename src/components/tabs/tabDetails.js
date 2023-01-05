@@ -1,6 +1,20 @@
 import { tab } from "@testing-library/user-event/dist/tab.js"
 import { useEffect, useState } from "react"
 import { editTab, getOpenTabs, removeItemFromTab } from "../../managers/tabManager.js"
+import {
+    Accordion,
+    AccordionBody,
+    AccordionHeader,
+    AccordionItem,
+    Button,
+    Card,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    CardText,
+    ListGroup,
+    ListGroupItem
+  } from 'reactstrap';
 
 export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabButtonFn, clickedCloseTab, clickBackButtonWhenClosing, resetTabs}) => {
 
@@ -89,38 +103,54 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
 
     return(
         <>
-        {
-            clickedAddName
-            ? <><button onClick={unclickAddNameFn}>Back</button><label>Name:</label><input onChange={updateName} ></input><button onClick={addNameSubmit}>Submit</button></>
-            : <></>
-        }
-        {
-            selectedTab.customer
-            ? <p>Tab for {selectedTab.customer}</p>
-            : ( clickedAddName
-                ? <><p>Tab {selectedTab.id} </p></>
-                : <><p>Tab {selectedTab.id} <button onClick={clickedAddNameFn} >Add Name to Tab</button></p></>)
-        }
-        {
-            selectedTab.closed
-            ? <p>Tab Closed</p>
-            : <p>Open Tab</p>
-        }
-        {
-            selectedTab?.items?.map(item => {
-                return <>
-                <p key={item.id}>{item.name} ${item.price} </p>
+        <Card
+            style={{
+                width: '18rem'
+            }}
+            >
+            <CardBody>
+                <CardTitle tag="h5">
                 {
-                    selectedTab.closed
-                    ? <></>
-                    : <button id={item.id} onClick={(e)=>removeItem(e.target.id)}>Remove Item</button>
-                } 
-            
-                </>
-            })
-        }
-        <p>Subtotal: {subtotal}</p>
-        {
+                    clickedAddName
+                    ? <><Button onClick={unclickAddNameFn}>Back</Button><br/><label>Name:</label><input onChange={updateName} ></input><Button onClick={addNameSubmit}>Submit</Button></>
+                    : <></>
+                }
+                {
+                    selectedTab.customer
+                    ? <p>Tab for {selectedTab.customer}</p>
+                    : ( clickedAddName
+                        ? <><p>Tab {selectedTab.id} </p></>
+                        : <><p>Tab {selectedTab.id} <Button onClick={clickedAddNameFn} >Add Name to Tab</Button></p></>)
+                }
+                </CardTitle>
+                <CardSubtitle
+                className="mb-2 text-muted"
+                tag="h6"
+                >
+                    {
+                        selectedTab.closed
+                        ? <p>Tab Closed</p>
+                        : <p>Open Tab</p>
+                    }
+                </CardSubtitle>
+                <ListGroup>
+                    {
+                        selectedTab?.items?.map(item => {
+                            return <>
+                            <ListGroupItem key={item.id}>{item.name} ${item.price} 
+                            {
+                                selectedTab.closed
+                                ? <></>
+                                : <Button id={item.id} onClick={(e)=>removeItem(e.target.id)}>Remove</Button>
+                            } 
+                            </ListGroupItem>
+                            </>
+                        })
+                    }
+                </ListGroup>
+                <CardText>
+                    <br></br>Subtotal: {subtotal}   <br></br><br></br>
+                    {
             selectedTab.closed
             ? <></>
             : (
@@ -128,24 +158,24 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                 ? (
                     clickedPayByCard
                     ? <></>
-                    : <button onClick={clickBackButtonWhenClosing}>Back</button>
+                    : <Button onClick={clickBackButtonWhenClosing}>Back</Button>
                 )
-                : <button onClick={clickedCloseTabButtonFn}>Close Tab</button>
+                : <Button onClick={clickedCloseTabButtonFn}>Close Tab</Button>
                 )
 
-        }
-        {
+        }             
+                {
             clickedCloseTab
             ? (
                 clickedPayByCard
-                ? <><button onClick={unclickPayWithCardButtonFn}>Back</button>
+                ? <><Button onClick={unclickPayWithCardButtonFn}>Back</Button>
                     Gratuity: <input type="number" onChange={updateGratuity}></input> 
-                    <button onClick={closeTab}>Swipe Card</button>
+                    <Button onClick={closeTab}>Swipe Card</Button>
                     <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
                     <p>Total: ${(parseFloat(subtotal * 1.07) + gratuity)}</p></>
                 : (<>
-                <button onClick={clickedPayWithCardButtonFn}>Pay with Card</button>
-                <button onClick={closeTab}>Customer Paid Cash</button>
+                <Button onClick={clickedPayWithCardButtonFn}>Pay with Card</Button>
+                <Button onClick={closeTab}>Customer Paid Cash</Button>
                 <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
                 <p>Total: ${(parseFloat(subtotal * 1.07))}</p>
               </>)
@@ -153,6 +183,15 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
 
             : <></>
         }
+                </CardText>
+
+            </CardBody>
+            </Card>
+
+
+    
+
+
         </>
     )
 }
