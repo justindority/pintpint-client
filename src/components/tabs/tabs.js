@@ -9,7 +9,8 @@ import {
     AccordionHeader,
     AccordionItem,
     Button,
-    ButtonGroup
+    ButtonGroup,
+    Collapse
   } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -20,6 +21,7 @@ export const Tabs = () => {
     const [clickedNewTab, setClickedNewTab] = useState(false)
     const [tabCounter, setTabCounter] = useState(0)
     const [clickedCloseTab, setClickedCloseTab] = useState(false)
+    const [clickedATab, setClickedATab] = useState(false)
 
 
 
@@ -32,7 +34,10 @@ export const Tabs = () => {
 
     }
 
-
+    const clickTab = (e) => {
+        getSelectedTab(e)
+        setClickedATab(true)
+    }
 
     const getSelectedTab = (e) => {
         setClickedCloseTab(false)
@@ -89,36 +94,43 @@ export const Tabs = () => {
     //     return <>Open Tab {tabCounter}</>
     // }
 
-    return (<div className="tabs-3-panel">
+    let color = "light"
+
+    return (
+    <div className="tabs-3-panel">
     <div className="three-panel-1">
-    <div>
-      <ButtonGroup>
-        <Button onClick={clickedOpenTabsFn}>Open Tabs</Button>
-        <Button onClick={clickedClosedTabsFn}>Closed Tabs</Button>
+      <ButtonGroup className="open-closed">
+        <Button color="primary" onClick={clickedOpenTabsFn}>Open Tabs</Button>
+        <Button color="primary" onClick={clickedClosedTabsFn}>Closed Tabs</Button>
       </ButtonGroup> <br></br>
-        <ButtonGroup vertical>
+        <ButtonGroup vertical className="tab-group">
           {
                 tabs?.map(tab => {
-                    return <Button id={tab?.id} onClick={(e)=>getSelectedTab(e)} >
+                    {
+                        color = "light"
+                        if(selectedTab?.id === tab.id){
+                            color = "primary"
+                        }
+                    }
+                    return (<Button color={color} id={tab?.id} key={tab?.id} onClick={clickTab} >
                         {
                             tab.customer
                             ? tab.customer
                             : <>Tab {tab.id}</>
-                        }</Button>
+                        }</Button>)
         })
     }
 
          
 
 
-    <Button onClick={(e)=>newTab(e)}>Open New Tab</Button>
+    <Button color="success" onClick={(e)=>newTab(e)}>Open New Tab</Button>
     </ButtonGroup>
-    </div>
     </div>
     <div className="three-panel-2">
     {
         selectedTab != null
-        ? (<><section><TabDetails key={clickedCloseTab} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab} clickedCloseTabButtonFn={clickedCloseTabButtonFn} clickedCloseTab={clickedCloseTab} clickBackButtonWhenClosing={clickBackButtonWhenClosing} resetTabs={resetTabs}></TabDetails></section>
+        ? (<><section><Collapse horizontal isOpen={clickedATab}><TabDetails key={'TabDetails'} clickedATab={clickedATab} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab} clickedCloseTabButtonFn={clickedCloseTabButtonFn} clickedCloseTab={clickedCloseTab} clickBackButtonWhenClosing={clickBackButtonWhenClosing} resetTabs={resetTabs}></TabDetails></Collapse></section>
         </>)
         : <></>
     }
@@ -126,7 +138,10 @@ export const Tabs = () => {
     <div>
     {
         selectedTab != null
-        ? (<><div className="three-panel-3"><ItemTypes selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab}></ItemTypes></div></>)
+        ? (
+            selectedTab.closed
+            ? <></>
+            : <><div className="three-panel-3"><ItemTypes key={'ItemTypes'} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab}></ItemTypes></div></>)
         : <></>
     }
     </div>

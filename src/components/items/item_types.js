@@ -6,7 +6,8 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Button
+    Button,
+    Card
   } from 'reactstrap';
   import PropTypes from 'prop-types';
 
@@ -30,14 +31,15 @@ export const ItemTypes = ({selectedTab, remoteSetSelectedTab}) => {
 
 
     return (<>
+    <Card className="item-type-card">
     <article className="item-types">
-    <div>
-      <Dropdown isOpen={dropdownOpen} toggle={toggle} >
-        <DropdownToggle caret>{selectedItemTypeText}</DropdownToggle>
-        <DropdownMenu>
+    <div className="dropdown-container">
+      <Dropdown color="primary" className="type-dropdown" isOpen={dropdownOpen} toggle={toggle} >
+        <DropdownToggle color="primary" className="type-dropdown" caret>{selectedItemTypeText}</DropdownToggle>
+        <DropdownMenu className="type-dropdown">
         {
         itemTypes?.map(itemType => {
-            return <DropdownItem id={itemType?.id} onClick={(e)=>clickItemType(e)} >
+            return <DropdownItem className="type-dropdown" id={itemType?.id} key={itemType?.id} onClick={(e)=>clickItemType(e)} >
                 {itemType?.type}
             </DropdownItem>
         })
@@ -51,11 +53,11 @@ export const ItemTypes = ({selectedTab, remoteSetSelectedTab}) => {
     </article>
     {
         selectedItemType != null
-        ? <section><Items selectedItemType={selectedItemType} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab}></Items></section>
+        ? <section><Items key={'Items'} selectedItemType={selectedItemType} selectedTab={selectedTab} remoteSetSelectedTab={remoteSetSelectedTab}></Items></section>
         : <></>
     }
 
-    </>)
+</Card></>)
 }
 
 ItemTypes.propTypes = {

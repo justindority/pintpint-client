@@ -2,14 +2,31 @@
     display: flex;
 }
 
-.three-panel-1 {
-    width: 33%
+.item-type-card {
+    padding: 1rem;
 }
 
-.three-panel-2 {
-    width: 33%
+.type-dropdown {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.three-panel-3 {
-    width: 33%
+.dropdown-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.edit-item-card {
+    padding: 1rem;
+}
+
+.item-list-card {
+    padding: 1rem;
+}
+
+.item-type-card-title {
+    font-weight: bold;
+    padding-bottom: .5rem;
 }

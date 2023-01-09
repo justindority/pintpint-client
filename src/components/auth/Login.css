@@ -43,6 +43,10 @@ fieldset {
 
 .container--login {
     text-align: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
 }
 
 .form--login {
@@ -58,9 +62,29 @@ fieldset {
     position: relative;
     bottom: -2rem;
 }
-/* 
+
+#root {
+    background-color:rgb(155, 155, 155);
+}
+
+body {
+    background-color:rgb(155, 155, 155) !important
+}
+
 html {
-    background-color:darkgray;
-} */
+    background-color:rgb(155, 155, 155);
+}
 
+.input-username {
+    width: 40%;
+}
 
+.login-section {
+    width: 30%;
+}
+
+.login-logo {
+    width: 100%;
+    margin-bottom: 2rem;
+    margin-top: 40%;
+}

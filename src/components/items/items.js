@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { getItems, getActiveItemsByType } from "../../managers/itemManager"
 import { addItemToTab, getTabs } from "../../managers/tabManager"
 import {
-    Button
+    Button,
+    Card
   } from 'reactstrap';
 
 export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => {
@@ -17,9 +18,9 @@ export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => 
         let item = {
             item: parseInt(itemId)
         }
-        addItemToTab(parseInt(selectedTab.id), item)
-        .then(getTabs().then(remoteSetSelectedTab(selectedTab.id)))
+        addItemToTab(parseInt(selectedTab.id), item).then(() => getTabs().then(remoteSetSelectedTab(selectedTab.id)))
     }
+    
 
     return(
         <>
@@ -30,7 +31,7 @@ export const Items = ({selectedItemType, selectedTab, remoteSetSelectedTab}) => 
                 {
                     selectedTab.closed
                     ? <></>
-                    : <Button onClick={(e)=>addTabItem(e.target.id)} id={item.id}>Add to Tab</Button>
+                    : <Button color="success" onClick={(e)=>addTabItem(e.target.id)} id={item.id}>Add to Tab</Button>
                 }
                 </p></>
             })

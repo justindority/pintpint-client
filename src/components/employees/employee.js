@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { editEmployee, getEmployee, getEmployees, terminateEmployee } from "../../managers/employeeManager"
 import './employee.css'
-import {Button, ButtonGroup, Input, InputGroup, InputGroupText} from 'reactstrap'
+import {Button, ButtonGroup, Input, InputGroup, InputGroupText, Card} from 'reactstrap'
 
 
 export const Employees = () => {
@@ -12,6 +12,7 @@ export const Employees = () => {
     const [clickedEmployee, setClickedEmployee] = useState(false)
     const [clickedEditEmployee, setClickedEditEmployee] = useState(false)
     const [editingEmployee, setEditingEmployee] = useState()
+    const [blueOrNah, setBlueOrNah] = useState("warning")
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -20,6 +21,8 @@ export const Employees = () => {
 
     const clickEmployee = (id) => {
         setClickedEmployee(true)
+        setClickedEditEmployee(false)
+        setBlueOrNah("warning")
         getEmployee(id).then(res => {
             let tempEmp = {
                 id: res.id,
@@ -38,6 +41,7 @@ export const Employees = () => {
 
     const clickEditEmployeeFn = () => {
         setEditingEmployee(selectedEmployee)
+        setBlueOrNah("primary")
         setClickedEditEmployee(true)
     }
 
@@ -48,6 +52,7 @@ export const Employees = () => {
     }
 
     const editEmployeeSubmitButton = () => {
+        setBlueOrNah("warning")
         setClickedEditEmployee(false)
         editEmployee(editingEmployee).then(res => getStuff())
 
@@ -69,6 +74,7 @@ export const Employees = () => {
         navigate('/register')
     }
 
+    let color = 'light'
 
 
     return(
@@ -80,10 +86,15 @@ export const Employees = () => {
                 <ButtonGroup vertical>
                 {
                     employees.map(emp => {
+                        {
+                            color = "light"
+                            if(selectedEmployee?.id === emp.id){
+                                color = "primary"
+                            }
+                        }
                         return (
-                            
                                 emp?.user?.is_active
-                            ? <><Button id={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{emp?.user?.first_name} {emp?.user?.last_name}</Button>
+                            ? <><Button color={color} id={emp.id} key={emp.id} onClick={e => clickEmployee(parseInt(e.target.id))}>{emp?.user?.first_name} {emp?.user?.last_name}</Button>
                         </>
                             : <></>
                             
@@ -91,27 +102,29 @@ export const Employees = () => {
                 })
                 }
                 
-                <Button onClick={registerNewEmployee}>Register New Employee</Button>
+                <Button color="success" onClick={registerNewEmployee}>Register New Employee</Button>
                 </ButtonGroup>
             </div>
             <div className="three-panel-2">
                 {
                     selectedEmployee
-                    ? <><p>Name: {selectedEmployee.first_name} {selectedEmployee.last_name}</p>
+                    ? <><Card className="selected-employee-card"><p>Name: {selectedEmployee.first_name} {selectedEmployee.last_name}</p>
                         <p>Hourly Rate: ${selectedEmployee.hourly_rate}</p>
                         <p>Username: {selectedEmployee.username}</p>
                         <p>Admin: {selectedEmployee.is_staff ? <>True</> : <>False</>}</p>
                         <p>Hire Date: {selectedEmployee.hire_date}</p>
-                        <Button onClick={clickEditEmployeeFn}>Edit Employee</Button>
-                        <Button onClick={terminateEmployeeFn}>Terminate Employee</Button>
-                        </>
+                        <ButtonGroup vertical>
+                            <Button color={blueOrNah} onClick={clickEditEmployeeFn}>Edit Employee</Button>
+                            <Button color="danger" onClick={terminateEmployeeFn}>Terminate Employee</Button>
+                        </ButtonGroup>
+                        </Card></>
                     : <> </>
                 }
             </div>
-            <div className="3-panel-3">
+            <div className="three-panel-3">
                 {
                     clickedEditEmployee
-                    ? (<>            
+                    ? (<>    <Card className="edit-employee-card">        
                         <div>
                         <InputGroup onChange={(evt)=>updateEmployee(evt)}>
                             <InputGroupText>
@@ -149,8 +162,8 @@ export const Employees = () => {
                             <Input id="hourly_rate" value={editingEmployee?.hourly_rate}/>
                         </InputGroup>
                         <br />
-                    <Button onClick={()=>editEmployeeSubmitButton()}>Submit</Button>
-                </div> 
+                    <Button color='success' onClick={()=>editEmployeeSubmitButton()}>Submit</Button>
+                </div> </Card>
                     </>)
                     : <></>
                 }

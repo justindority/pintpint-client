@@ -13,8 +13,8 @@ export const AdminViews = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 			<Route path="/tabs" element={<Tabs />} />
-            <Route path="/items" element={<ItemManager />} />
-            <Route path="/employees" element={<Employees />} />
+            <Route path="/items" element={<ItemManager key={'Items'}/>} />
+            <Route path="/employees" element={<Employees key={'Employees'}/>} />
             <Route path="/reports" element={<Reports />} />
 
 

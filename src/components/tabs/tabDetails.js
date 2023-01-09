@@ -13,10 +13,15 @@ import {
     CardSubtitle,
     CardText,
     ListGroup,
-    ListGroupItem
+    ListGroupItem,
+    Collapse,
+    ButtonGroup,
+    InputGroup,
+    InputGroupText,
+    Input
   } from 'reactstrap';
 
-export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabButtonFn, clickedCloseTab, clickBackButtonWhenClosing, resetTabs}) => {
+export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabButtonFn, clickedCloseTab, clickBackButtonWhenClosing, resetTabs, clickedATab}) => {
 
     const [clickedAddName, setClickedAddName] = useState(false)
     const [tabName, setTabName] = useState()
@@ -28,8 +33,7 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
         let item = {
             item: parseInt(itemId)
         }
-        removeItemFromTab(parseInt(selectedTab.id),item)
-        .then(remoteSetSelectedTab(parseInt(selectedTab.id)))
+        removeItemFromTab(parseInt(selectedTab.id),item).then(() => remoteSetSelectedTab(parseInt(selectedTab.id)))
     }
 
     useEffect(()=>{
@@ -101,18 +105,19 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
 
     }
 
+
     return(
         <>
         <Card
-            style={{
-                width: '18rem'
-            }}
             >
             <CardBody>
                 <CardTitle tag="h5">
                 {
                     clickedAddName
-                    ? <><Button onClick={unclickAddNameFn}>Back</Button><br/><label>Name:</label><input onChange={updateName} ></input><Button onClick={addNameSubmit}>Submit</Button></>
+                    ? <div className="add-name-div">
+                    <InputGroup><InputGroupText>name</InputGroupText><Input onChange={updateName} ></Input> </InputGroup>
+                    <ButtonGroup className="button-div"><Button color="warning" onClick={unclickAddNameFn}>Back</Button><Button color="success" onClick={addNameSubmit}>Submit</Button></ButtonGroup><br/>
+                    </div>
                     : <></>
                 }
                 {
@@ -120,7 +125,7 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                     ? <p>Tab for {selectedTab.customer}</p>
                     : ( clickedAddName
                         ? <><p>Tab {selectedTab.id} </p></>
-                        : <><p>Tab {selectedTab.id} <Button onClick={clickedAddNameFn} >Add Name to Tab</Button></p></>)
+                        : <><p>Tab {selectedTab.id} <Button color="primary" onClick={clickedAddNameFn} >Add Name to Tab</Button></p></>)
                 }
                 </CardTitle>
                 <CardSubtitle
@@ -137,11 +142,11 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                     {
                         selectedTab?.items?.map(item => {
                             return <>
-                            <ListGroupItem key={item.id}>{item.name} ${item.price} 
+                            <ListGroupItem key={item?.id}>{item.name} ${item.price} &nbsp;
                             {
                                 selectedTab.closed
                                 ? <></>
-                                : <Button id={item.id} onClick={(e)=>removeItem(e.target.id)}>Remove</Button>
+                                : <Button id={item.id} color="light" onClick={(e)=>removeItem(e.target.id)}>&#128465;</Button>
                             } 
                             </ListGroupItem>
                             </>
@@ -158,9 +163,9 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                 ? (
                     clickedPayByCard
                     ? <></>
-                    : <Button onClick={clickBackButtonWhenClosing}>Back</Button>
+                    : <ButtonGroup></ButtonGroup>
                 )
-                : <Button onClick={clickedCloseTabButtonFn}>Close Tab</Button>
+                : <Button color="primary" onClick={clickedCloseTabButtonFn}>Close Tab</Button>
                 )
 
         }             
@@ -168,16 +173,21 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
             clickedCloseTab
             ? (
                 clickedPayByCard
-                ? <><Button onClick={unclickPayWithCardButtonFn}>Back</Button>
-                    Gratuity: <input type="number" onChange={updateGratuity}></input> 
-                    <Button onClick={closeTab}>Swipe Card</Button>
+                ? <>
+                    Gratuity: <input type="number" onChange={updateGratuity}></input> &nbsp;
+                    <ButtonGroup>
+                    <Button color='success' onClick={closeTab}>Swipe Card</Button>
+                    <Button color='warning' onClick={unclickPayWithCardButtonFn}>Back</Button>
+                    </ButtonGroup><br/><br/>
                     <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
                     <p>Total: ${(parseFloat(subtotal * 1.07) + gratuity)}</p></>
                 : (<>
-                <Button onClick={clickedPayWithCardButtonFn}>Pay with Card</Button>
-                <Button onClick={closeTab}>Customer Paid Cash</Button>
+                <ButtonGroup>
+                <Button color='warning' onClick={clickBackButtonWhenClosing}>Back</Button>
+                <Button color='primary' onClick={clickedPayWithCardButtonFn}>Pay with Card</Button>
+                <Button color='success' onClick={closeTab}>Customer Paid Cash</Button></ButtonGroup><br/><br/>
                 <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
-                <p>Total: ${(parseFloat(subtotal * 1.07))}</p>
+                <p>Total: ${(parseFloat(subtotal * 1.07)).toFixed(2)}</p>
               </>)
               )
 
@@ -195,3 +205,4 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
         </>
     )
 }
+

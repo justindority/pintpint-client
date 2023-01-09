@@ -2,6 +2,9 @@ import React, { useState } from "react"
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"
 import "./Login.css"
+import {Button, InputGroup, InputGroupText, Input} from 'reactstrap'
+import { default as logo } from "./logo2.png";
+
 
 export const Login = () => {
     const [username, setUsername] = useState("")
@@ -37,34 +40,37 @@ export const Login = () => {
 
     return (
         <main className="container--login">
-            <section>
-                <form className="form--login" onSubmit={handleLogin}>
-                    <h1>pintpoint</h1>
-                    <h2>Please sign in</h2>
-                    <fieldset>
-                        <label htmlFor="inputUsername"> username </label>
-                        <input type="text"
+            <section className="login-section">
+
+                    <img className="login-logo" src={logo}></img>
+                 
+                    <InputGroup className="input-username">
+                        <InputGroupText htmlFor="input-username"> username </InputGroupText>
+                        <Input type="text"
                             value={username}
                             onChange={evt => setUsername(evt.target.value)}
-                            className="form-control"
+                            className="input-username"
                             placeholder="username"
                             required autoFocus />
-                    </fieldset>
-                    <fieldset>
-                        <label htmlFor="inputEmail">password</label>
-                        <input type="password"
+                    </InputGroup>
+                        <br/>
+                        <InputGroup className="input-password">
+                        <InputGroupText htmlFor="input-password">password</InputGroupText>
+                        <Input type="password"
                             value={password}
                             onChange={evt => setPass(evt.target.value)}
                             className="form-control"
                             placeholder="password"
                             required autoFocus />
-                    </fieldset>
-                    <fieldset>
-                        <button onClick={handleLogin} type="submit">
+                            </InputGroup>
+                        
+                        <br/>
+                        <Button color='primary' onClick={handleLogin} type="submit">
                             Sign in
-                        </button>
-                    </fieldset>
-                </form>
+                        </Button>
+                        
+                    
+
             </section>
             {/* <section className="link--register">
                 <Link to="/register">Not a member yet?</Link>

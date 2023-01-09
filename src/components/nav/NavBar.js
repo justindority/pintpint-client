@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { getMe } from "../../managers/authManager"
 import "./NavBar.css"
+import { default as logo } from "./logo2.png";
 
 export const NavBar = ({me}) => {
     const navigate = useNavigate()
@@ -26,24 +27,33 @@ export const NavBar = ({me}) => {
     return (<>
 
         <ul className="navbar">
+        <li className="navbar__item">
+                <img class="navbar-logo" src={logo}/>
+            </li>
             <li className="navbar__item">
-                <Link className="navbar__link" to="tabs" onClick={() => {
+                <h5 className="navbar__link hover-underline-animation" to="tabs" onClick={() => {
                     navigate("/tabs")
-                }}>Tabs</Link>
+                }}>Tabs</h5>
             </li>
             {
                 myself?.user?.is_staff
                 ? (
                     <>
-                    <Link className="navbar__link" to="items" onClick={() => {
+                    <li className="navbar__item">
+                    <h5 className="navbar__link hover-underline-animation" to="items" onClick={() => {
                         navigate("/items")
-                    }}>Items</Link> &nbsp;&nbsp;
-                    <Link className="navbar__link" to="employees" onClick={() => {
+                    }}>Items</h5> 
+                    </li>
+                    <li className="navbar__item">
+                    <h5 className="navbar__link hover-underline-animation" to="employees" onClick={() => {
                         navigate("/employees")
-                    }}>Employees</Link> &nbsp;&nbsp;
-                    <Link className="navbar__link" to="reports" onClick={() => {
+                    }}>Employees</h5>
+                    </li>
+                    <li className="navbar__item">
+                    <h5 className="navbar__link hover-underline-animation" to="reports" onClick={() => {
                         navigate("/reports")
-                    }}>Reports</Link>&nbsp;
+                    }}>Reports</h5>
+                    </li>
                     </>
                 )
                 : (
@@ -52,10 +62,10 @@ export const NavBar = ({me}) => {
             }
 
             <li className="navbar__item navbar__logout">
-                <Link className="navbar__link" to="" onClick={() => {
+                <h5 className="navbar__link hover-underline-animation" to="" onClick={() => {
                     localStorage.removeItem("pintpoint_token")
                     navigate("/", {replace: true})
-                }}>Logout</Link>
+                }}>Logout</h5>
             </li>
         </ul></>
     )

@@ -5,12 +5,12 @@
 }
 
 .three-panel-1 {
-    width: max-content;
+    width: fit-content;
     margin: 1rem;
 }
 
 .three-panel-2 {
-    width: max-content;
+    width: fit-content;
     margin: 1rem;
 }
 
@@ -19,7 +19,13 @@
     margin: 1rem;
 }
 
+.card {
+    width: max-content
+}
 
+.card-body {
+    width: max-content
+}
 
 .item-type {
     padding: 1rem
@@ -31,4 +37,49 @@
 
 .tab-list-item {
     border: 1px solid black;
+}
+
+.open-closed {
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+.tab-group {
+    width: 100%;
+}
+
+.custom-button {
+    color: rgb(185, 252, 255)
+}
+
+.bar-chart {
+    width: 60%;
+}
+
+.pie-chart {
+    width: 50%
+}
+
+.reports {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-name-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.add-name-div button {
+    width: 30%;
+    text-align: center;
+}
+
+.button-div {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+    width: 60%;
 }
