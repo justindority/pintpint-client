@@ -121,7 +121,7 @@ export const ItemManager = () => {
     return(
         <div className="items-3-panel">
             <div className="three-panel-1">
-                <ButtonGroup vertical>
+                <ButtonGroup className="item-type-button-group" vertical>
             {
                 itemTypes?.map(type => {
                     {

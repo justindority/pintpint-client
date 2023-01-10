@@ -65,8 +65,9 @@ export const Employees = () => {
 
     const terminateEmployeeFn = () => {
         let empToSend = selectedEmployee.user_id
-        terminateEmployee(empToSend).then(getEmployees().then(data => setEmployees(data).then(setClickedEditEmployee(false)))
-        )
+        terminateEmployee(empToSend).then((res)=>getEmployees().then(data => setEmployees(data)))
+        setSelectedEmployee(null)
+        setClickedEditEmployee(false)
     }
 
     const registerNewEmployee = (e) => {
@@ -83,7 +84,7 @@ export const Employees = () => {
         
 
             <div className="three-panel-1">
-                <ButtonGroup vertical>
+                <ButtonGroup className="employees-button-group" vertical>
                 {
                     employees.map(emp => {
                         {

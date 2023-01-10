@@ -5,13 +5,15 @@
 }
 
 .three-panel-1 {
-    width: fit-content;
+    width: 16%;
     margin: 1rem;
+    padding-right: 1.5rem;
 }
 
 .three-panel-2 {
     width: fit-content;
     margin: 1rem;
+    padding-right: 1.5rem;
 }
 
 .three-panel-3 {
@@ -20,7 +22,7 @@
 }
 
 .card {
-    width: max-content
+    width: max-content;
 }
 
 .card-body {
@@ -82,4 +84,12 @@
     justify-content: center;
     padding-top: 1rem;
     width: 60%;
+}
+
+.item-type-button-group {
+    width: 100%;
+}
+
+.employees-button-group {
+    width: 100%;
 }

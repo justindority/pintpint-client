@@ -154,7 +154,18 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                     }
                 </ListGroup>
                 <CardText>
-                    <br></br>Subtotal: {subtotal}   <br></br><br></br>
+                    <br></br><p>Subtotal: {subtotal}</p>   
+                    {
+                        selectedTab.closed
+                        ? (
+                            selectedTab.gratuity > 0
+                            ? (<><p>Tax: ${(subtotal * .07).toFixed(2)}</p><p>Gratuity: ${selectedTab.gratuity}</p>
+                            <p>Total: ${(parseFloat(subtotal * 1.07 + parseFloat(selectedTab.gratuity))).toFixed(2)}</p></>)
+                            : (<><p>Tax: ${(subtotal * .07).toFixed(2)}</p>
+                        <p>Total: ${(parseFloat(subtotal * 1.07)).toFixed(2)}</p></>)
+                        )
+                        : <></>
+                    }
                     {
             selectedTab.closed
             ? <></>
@@ -180,7 +191,7 @@ export const TabDetails = ({selectedTab, remoteSetSelectedTab, clickedCloseTabBu
                     <Button color='warning' onClick={unclickPayWithCardButtonFn}>Back</Button>
                     </ButtonGroup><br/><br/>
                     <p>Tax: ${(subtotal * .07).toFixed(2)}</p>
-                    <p>Total: ${(parseFloat(subtotal * 1.07) + gratuity)}</p></>
+                    <p>Total: ${(parseFloat(subtotal * 1.07) + gratuity).toFixed(2)}</p></>
                 : (<>
                 <ButtonGroup>
                 <Button color='warning' onClick={clickBackButtonWhenClosing}>Back</Button>

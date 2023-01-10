@@ -61,14 +61,11 @@ export const barGraphOptions = {
 export const Reports = () => {
 
     const [clickedPreviousWeekSales, setClickedPreviousWeekSales] = useState()
-    const [previousWeekTabs, setPreviousWeekTabs] = useState([])
-    const [weekTotal, setWeekTotal] = useState()
     const [allItems, setAllItems] = useState()
     const [itemNames, setItemNames] = useState()
-    const [colorArray, setColorArray] = useState()
 
     useEffect(()=>{
-        let response
+
         getClosed().then(res => {
             let weekTotal = 0
             let items = []
@@ -95,27 +92,9 @@ export const Reports = () => {
 
             setAllItems(finalArray)
 
-
-
-            for (const tab of res) {
-                let subtotal = 0
-               for (const item of tab.items) {
-                subtotal += parseFloat(item.price)
-               } 
-               tab.subtotal = subtotal
-               weekTotal += subtotal
-               if(tab.customer){
-                tab.customer = `${tab.customer}'s Tab`
-               } else {
-                tab.customer = `Tab ${tab.id}`
-               }
-            }
-            setPreviousWeekTabs(res)
-            setWeekTotal(weekTotal)
     })}, [])
 
     const clickPreviousWeekSalesFn = () => {
-
             setClickedPreviousWeekSales(true)
         }
 
@@ -125,19 +104,12 @@ export const Reports = () => {
     const barGraphData = {
         labels,
         datasets: [
-            {
-            label: 'Number of Item Sold',
-            data: allItems?.map(item => item.count),
-            backgroundColor: 'rgb(12, 110, 253)',
-            }
-            // {
-            //     label: 'Dataset 2',
-            //     data: allItems?.map(item => {
-            //         return parseInt(item.price) * item.count
-            //     }),
-            //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            //     }
-        ],
+                {
+                label: 'Number of Item Sold',
+                data: allItems?.map(item => item.count),
+                backgroundColor: 'rgb(12, 110, 253)',
+                }
+            ],
         };
 
         const getMyColor = () => {
@@ -174,20 +146,7 @@ export const Reports = () => {
                 clickedPreviousWeekSales
                 ? <>        <div className="bar-chart" ><Bar options={barGraphOptions} data={barGraphData} /></div>
                             <br/><br/>
-                            <div className="pie-chart" ><Pie className="pie-chart" data={pieData} /></div>
-
-                    {/* {
-                        previousWeekTabs?.map(tab => {
-                            return <section className="report-tab">
-                            <p>{tab.customer}</p>
-                           <p>Subtotal: ${tab.subtotal}</p>
-                           </section>
-                        }
-                           
-                        )
-                    }
-                    <p>Report Total: ${weekTotal}</p> */}
-                 
+                            <div className="pie-chart" ><Pie className="pie-chart" data={pieData} /></div>                 
                   </>
                 : <></>
             }
