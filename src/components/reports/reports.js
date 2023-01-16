@@ -67,7 +67,6 @@ export const Reports = () => {
     useEffect(()=>{
 
         getClosed().then(res => {
-            let weekTotal = 0
             let items = []
             let itemNames = new Set()
             for (const tab of res) {
